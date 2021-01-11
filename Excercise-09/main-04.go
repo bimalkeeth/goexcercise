@@ -7,17 +7,17 @@ import (
 )
 
 type data struct {
-	sync.Mutex
+	lock  *sync.RWMutex
 	round map[string]int
 }
 
 func newData() *data {
-	return &data{round: make(map[string]int)}
+	return &data{round: make(map[string]int), lock: &sync.RWMutex{}}
 }
 
 func (d *data) update(wid string) {
-	d.Lock()
-	defer d.Unlock()
+	d.lock.Lock()
+	defer d.lock.Unlock()
 	count, ok := d.round[wid]
 	if !ok {
 		fmt.Println("some error occurred")
@@ -33,7 +33,9 @@ func doWork(wid string, d *data, wg *sync.WaitGroup) {
 }
 func getData(d *data) {
 	for range time.Tick(time.Second * 2) {
+		d.lock.RLock()
 		fmt.Println(d)
+		d.lock.RUnlock()
 	}
 }
 
