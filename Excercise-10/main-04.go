@@ -16,16 +16,12 @@ type MyWork struct {
 	WP        *workpool.WorkPool
 }
 
-func (workPool *MyWork) DoWork2(workRoutine int) {
+func (workPool *MyWork) DoWork(workRoutine int) {
 	fmt.Printf("%s : %d\n", workPool.Name, workPool.BirthYear)
 	fmt.Printf("*******> WR: %d  QW: %d  AR: %d\n", workRoutine, workPool.WP.QueuedWork(), workPool.WP.ActiveRoutines())
 	time.Sleep(100 * time.Millisecond)
 
 	//panic("test")
-}
-
-func (workPool *MyWork) DoWork(workRoutine int) {
-	fmt.Println("Hello ")
 }
 
 func main() {
