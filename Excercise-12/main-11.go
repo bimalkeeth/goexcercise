@@ -51,6 +51,7 @@ func doWork(done <-chan interface{}, pulseInterval time.Duration) (<-chan interf
 }
 
 func main() {
+
 	done := make(chan interface{})
 	time.AfterFunc(1*time.Minute, func() { close(done) })
 	const timeout = 2 * time.Second
