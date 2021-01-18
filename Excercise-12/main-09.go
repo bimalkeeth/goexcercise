@@ -6,24 +6,24 @@ import (
 	"time"
 )
 
-func printGreeting(done <-chan interface{}) error {
-	greeting, err := genGreeting(done)
+func printGreeting2(done <-chan interface{}) error {
+	greeting, err := genGreeting2(done)
 	if err != nil {
 		return err
 	}
 	fmt.Printf("%s world!\n", greeting)
 	return nil
 }
-func printFarewell(done <-chan interface{}) error {
-	farewell, err := genFarewell(done)
+func printFarewell2(done <-chan interface{}) error {
+	farewell, err := genFarewell2(done)
 	if err != nil {
 		return err
 	}
 	fmt.Printf("%s world!\n", farewell)
 	return nil
 }
-func genGreeting(done <-chan interface{}) (string, error) {
-	switch locale, err := locale(done); {
+func genGreeting2(done <-chan interface{}) (string, error) {
+	switch locale, err := locale2(done); {
 	case err != nil:
 		return "", err
 	case locale == "EN/US":
@@ -33,8 +33,8 @@ func genGreeting(done <-chan interface{}) (string, error) {
 
 }
 
-func genFarewell(done <-chan interface{}) (string, error) {
-	switch locale, err := locale(done); {
+func genFarewell2(done <-chan interface{}) (string, error) {
+	switch locale, err := locale2(done); {
 	case err != nil:
 		return "", err
 	case locale == "EN/US":
@@ -42,7 +42,7 @@ func genFarewell(done <-chan interface{}) (string, error) {
 	}
 	return "", fmt.Errorf("unsupported locale")
 }
-func locale(done <-chan interface{}) (string, error) {
+func locale2(done <-chan interface{}) (string, error) {
 	select {
 	case <-done:
 		return "", fmt.Errorf("canceled")
@@ -58,7 +58,7 @@ func main() {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		if err := printGreeting(done); err != nil {
+		if err := printGreeting2(done); err != nil {
 			fmt.Printf("%v", err)
 			return
 		}
@@ -66,7 +66,7 @@ func main() {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		if err := printFarewell(done); err != nil {
+		if err := printFarewell2(done); err != nil {
 			fmt.Printf("%v", err)
 			return
 		}
